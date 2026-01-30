@@ -26,17 +26,18 @@ databaseChangeLog:
                     nullable: false
                     unique: true
               - column:
-                  name: createdAt
+                  name: created_at
                   type: TIMESTAMP
                   defaultValueComputed: CURRENT_TIMESTAMP
               - column:
-                  name: updatedAt
+                  name: updated_at
                   type: TIMESTAMP
                   defaultValueComputed: CURRENT_TIMESTAMP
               - column:
-                  name: test_flag
-                  type: BOOLEAN
-                  defaultValueBoolean: true
+                  name: password
+                  type: VARCHAR(30)
+                  constraints:
+                    nullable: false
 
         - createTable:
             tableName: transactions
@@ -73,6 +74,10 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: test_flag
-                  type: BOOLEAN
-                  defaultValueBoolean: true
+                  name: user_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_transaction_user
+                    referencedTableName: users
+                    referencedColumnNames: id
