@@ -1,4 +1,4 @@
-package org.example.CustomException;
+package org.example.CustomException.TransactionExceptions;
 
 public class TransactionNotFoundException extends RuntimeException{
     public TransactionNotFoundException(Long transactionId){

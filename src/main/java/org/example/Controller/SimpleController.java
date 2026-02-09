@@ -1,12 +1,12 @@
 package org.example.Controller;
 
+import jakarta.validation.Valid;
 import jakarta.websocket.server.PathParam;
-import org.apache.catalina.User;
-import org.example.DTO.Transaction.TransactionRequest;
-import org.example.DTO.Transaction.TransactionResponce;
+import org.example.DTO.Transaction.TransactionDtoRequest;
+import org.example.DTO.Transaction.TransactionDtoResponce;
 import org.example.DTO.User.UserDtoRequest;
 import org.example.DTO.User.UserDtoResponce;
-import org.example.Entity.Transaction;
+import org.example.Enum.CategoryType;
 import org.example.Service.TransactionService;
 import org.example.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -28,7 +29,7 @@ public class SimpleController {
     }
 
     @PostMapping("/create/user")
-    public ResponseEntity<UserDtoResponce> createUser(@RequestBody UserDtoRequest userRequest){
+    public ResponseEntity<UserDtoResponce> createUser(@Valid @RequestBody UserDtoRequest userRequest){
         UserDtoResponce createdUser = userService.createUser(userRequest);
         return ResponseEntity
                 .created(URI.create("/create/user/" + createdUser.getId()))
@@ -37,8 +38,8 @@ public class SimpleController {
     }
 
     @PostMapping("/create/transaction")
-    public ResponseEntity<TransactionResponce> createTransaction(@RequestBody TransactionRequest request){
-        TransactionResponce createdTransaction = transactionService.createTransaction(request);
+    public ResponseEntity<TransactionDtoResponce> createTransaction(@Valid @RequestBody TransactionDtoRequest request){
+        TransactionDtoResponce createdTransaction = transactionService.createTransaction(request);
         return ResponseEntity
                 .created(URI.create("/create/transaction/" + createdTransaction.getId()))
                 .body(createdTransaction);
@@ -51,19 +52,27 @@ public class SimpleController {
     }
 
     @GetMapping("/get/transactions")
-    public ResponseEntity<List<TransactionResponce>> getTransactions(){
+    public ResponseEntity<List<TransactionDtoResponce>> getTransactions(){
         return ResponseEntity.ok(transactionService.getAllTransactions());
     }
 
     @GetMapping("/transaction/{id}")
-    public ResponseEntity<TransactionResponce> getTransactionByid(@PathVariable Long id){
+    public ResponseEntity<TransactionDtoResponce> getTransactionByid(@PathVariable Long id){
         return ResponseEntity
                 .ok(transactionService.getTransactionById(id));
     }
 
     @GetMapping("/get/user/{id}")
-    public ResponseEntity<UserDtoResponce> getUserById(@PathParam("id") Long id){
+    public ResponseEntity<UserDtoResponce> getUserById(@PathVariable Long id){
         return ResponseEntity
                 .ok(userService.findUserById(id));
+    }
+
+    @GetMapping("/transaction/getByCategory/{category}")
+    public ResponseEntity<List<TransactionDtoResponce>> getTransactionByCategory(@PathVariable CategoryType category){
+        List<TransactionDtoResponce> responces = new ArrayList<>();
+        responces = transactionService.getTransactionByCategory(category);
+        return ResponseEntity
+                .ok(responces);
     }
 }

@@ -1,0 +1,28 @@
+package org.example.Entity;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Table(name = "accounts")
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class Account {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(name = "total_account", nullable = false)
+    private Double totalAccount;
+    @Column(name = "bank", nullable = false)
+    private String bank;
+    @Column(name = "card_number", nullable = false)
+    private String cardNumber;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+}

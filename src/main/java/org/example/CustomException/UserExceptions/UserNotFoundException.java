@@ -1,4 +1,4 @@
-package org.example.CustomException;
+package org.example.CustomException.UserExceptions;
 
 public class UserNotFoundException extends RuntimeException{
     public UserNotFoundException(Long id){

@@ -1,40 +1,51 @@
 package org.example.Service;
 
 import jakarta.transaction.Transactional;
-import org.example.CustomException.UserNotFoundException;
+import lombok.RequiredArgsConstructor;
+import org.example.CustomException.UserExceptions.EmailAlreadyExistException;
+import org.example.CustomException.UserExceptions.UserNotFoundException;
 import org.example.Entity.User;
 import org.example.DTO.User.UserDtoRequest;
 import org.example.DTO.User.UserDtoResponce;
 import org.example.Repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.example.Validator.UserValidator.UserValidator;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
+@Transactional
 public class UserService {
-    private UserRepository userRepository;
-   /* private final PasswordEncoder passwordEncoder;*/
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    public UserService(UserRepository userRepository /*PasswordEncoder passwordEncoder*/){
-        this.userRepository = userRepository;
-        /*this.passwordEncoder = passwordEncoder;*/
-    }
+    private final UserValidator validatorController;
 
     public UserDtoResponce createUser(UserDtoRequest userRequest){
-        User newUser = new User();
-        newUser.setName(userRequest.getName());
-        newUser.setEmail(userRequest.getEmail());
-        if(userRequest.getPassword() != null){
-            newUser.setPassword(
-                    userRequest.getPassword()
-            );
-        }
+        validatorController.fullValidation(userRequest);
+        checkEmailUnique(userRequest.getEmail());
+        User newUser = createUserEntity(userRequest);
         User savedUser = userRepository.save(newUser);
+
         return mapToDtoResponce(savedUser);
+    }
+
+    private void checkEmailUnique(String email){
+        if(userRepository.existsByEmail(email)){
+            throw new EmailAlreadyExistException();
+        }
+    }
+
+    private User createUserEntity(UserDtoRequest request){
+        User newUser = new User();
+        newUser.setName(request.getName());
+        newUser.setEmail(request.getEmail());
+        newUser.setPassword(passwordEncoder.encode(request.getPassword()));
+
+        return newUser;
     }
 
     public List<UserDtoResponce> findAllUsers(){

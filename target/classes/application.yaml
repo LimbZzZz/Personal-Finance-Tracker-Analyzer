@@ -27,4 +27,4 @@ spring:
     change-log: db/changelog/changelog.yaml
     contexts: dev
     default-schema: public
-    drop-first: false
+    drop-first: true
