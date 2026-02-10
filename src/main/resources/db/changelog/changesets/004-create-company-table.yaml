@@ -20,11 +20,11 @@ databaseChangeLog:
                     nullable: true
                     unique: true
               - column:
-                  name: user_id
+                  name: transaction_id
                   type: BIGINT
                   constraints:
                     nullable: false
-                    foreignKeyName: transaction
+                    foreignKeyName: fk-company-transaction
                     referencedTableName: transactions
                     referencedColumnNames: id
 

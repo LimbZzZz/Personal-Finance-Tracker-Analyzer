@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 003-create-accounts-table
+      id: 005-create-accounts-table
       author: JeeZ
       changes:
         - createTable:

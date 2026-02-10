@@ -1,0 +1,32 @@
+databaseChangeLog:
+  - changeSet:
+      id: 009-fill-company-changeset
+      author: JeeZ
+      changes:
+        - insert:
+            tableName: company
+            columns:
+              - column:
+                  name: company_name
+                  value: McDonald
+              - column:
+                  name: transaction_id
+                  value: 2
+        - insert:
+            tableName: company
+            columns:
+              - column:
+                  name: company_name
+                  value: Lase Tag
+              - column:
+                  name: transaction_id
+                  value: 1
+        - insert:
+            tableName: company
+            columns:
+              - column:
+                  name: company_name
+                  value: Interactive Cafe
+              - column:
+                  name: transaction_id
+                  value: 3

@@ -1,0 +1,41 @@
+databaseChangeLog:
+  - changeSet:
+      id: 006-fill-user-changeset
+      author: JeeZ
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: username
+                  value: Ellie
+              - column:
+                  name: email
+                  value: ellie@mail.ru
+              - column:
+                  name: password
+                  value: 1231234
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: username
+                  value: Billy
+              - column:
+                  name: email
+                  value: billy@mail.ru
+              - column:
+                  name: password
+                  value: 5123512
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: username
+                  value: Adam
+              - column:
+                  name: email
+                  value: adam@mail.ru
+              - column:
+                  name: password
+                  value: 5161256

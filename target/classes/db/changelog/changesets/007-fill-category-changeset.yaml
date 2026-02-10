@@ -1,0 +1,41 @@
+databaseChangeLog:
+  - changeSet:
+      id: 007-fill-category-changeset
+      author: JeeZ
+      changes:
+        - insert:
+            tableName: category
+            columns:
+              - column:
+                  name: category_type
+                  value: Развлечения
+              - column:
+                  name: color
+                  value: 961de0
+        - insert:
+            tableName: category
+            columns:
+              - column:
+                  name: category_type
+                  value: Ресторан
+              - column:
+                  name: color
+                  value: 1d3ee0
+        - insert:
+            tableName: category
+            columns:
+              - column:
+                  name: category_type
+                  value: Кафе
+              - column:
+                  name: color
+                  value: 1dd3e0
+        - insert:
+            tableName: category
+            columns:
+              - column:
+                  name: category_type
+                  value: Кино
+              - column:
+                  name: color
+                  value: 1de082
