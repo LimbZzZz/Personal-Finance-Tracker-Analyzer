@@ -1,5 +1,6 @@
 package org.example.Service;
 
+import lombok.RequiredArgsConstructor;
 import org.example.CustomException.TransactionExceptions.TransactionNotFoundException;
 import org.example.CustomException.UserExceptions.UserNotFoundException;
 import org.example.DTO.Transaction.TransactionDtoRequest;
@@ -22,25 +23,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class TransactionService {
     private final TransactionRepository transactionRepository;
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
     private final CompanyRepository companyRepository;
     private final TransactionBusinessValidator validator;
-
-    @Autowired
-    public TransactionService(TransactionRepository transactionRepository,
-                              UserRepository userRepository,
-                              TransactionBusinessValidator validator,
-                              CategoryRepository categoryRepository,
-                              CompanyRepository companyRepository){
-        this.transactionRepository = transactionRepository;
-        this.userRepository = userRepository;
-        this.validator = validator;
-        this.categoryRepository = categoryRepository;
-        this.companyRepository = companyRepository;
-    }
 
     public TransactionDtoResponce createTransaction(TransactionDtoRequest request){
         //validator.fullValidate(request);
@@ -82,6 +71,7 @@ public class TransactionService {
         }
         return responces;
     }
+
     private TransactionDtoResponce mapToTransaction(Transaction transaction){
         return TransactionDtoResponce.builder()
                 .id(transaction.getId())

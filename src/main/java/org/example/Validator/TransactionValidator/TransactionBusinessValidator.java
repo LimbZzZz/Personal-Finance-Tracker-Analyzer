@@ -1,30 +1,34 @@
 package org.example.Validator.TransactionValidator;
 
+import lombok.RequiredArgsConstructor;
 import org.example.CustomException.TransactionExceptions.FieldError;
-import org.example.CustomException.TransactionExceptions.TransactionNotFoundException;
 import org.example.CustomException.TransactionExceptions.ValidationTransactionException;
 import org.example.DTO.Transaction.TransactionDtoRequest;
-import org.example.Enum.CategoryType;
+import org.example.Entity.Category;
 import org.example.Enum.TransactionType;
+import org.example.Repository.CategoryRepository;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Component
+@RequiredArgsConstructor
 public class TransactionBusinessValidator {
     private static final List<TransactionType> VALID_TYPES = List.of(
             TransactionType.EXPENCE, TransactionType.INCOME
     );
 
-    private static final List<CategoryType> VALID_CATEGORY = List.of(
-            CategoryType.ENTERTAINMENT, CategoryType.SHOPPING,
-            CategoryType.CAFE, CategoryType.PRODUCTS,
-            CategoryType.OTHER
+    private final CategoryRepository categoryRepository;
+
+    private static final Map<String, TransactionType> VALID_PARE_CATEGORY_TRANSACTION = Map.of(
+            "Развлечения", TransactionType.EXPENCE,
+            "Ресторан", TransactionType.INCOME,
+            "Кафе", TransactionType.INCOME,
+            "Кино", TransactionType.EXPENCE
     );
 
     public void fullValidate(TransactionDtoRequest request) {
+
         List<FieldError> errors = new ArrayList<>();
         //Ошибка в типе транзакции
         typeValidate(request, errors);
@@ -58,21 +62,23 @@ public class TransactionBusinessValidator {
         }
     }
 
-/*    public void categoryValidate(TransactionDtoRequest request, List<FieldError> errors){
-        if(request.getCategory() == null){
-            errors.add(new FieldError("Категория транзакции",
-                    "Неверный тип категории",
-                    "Category равно null"));
+    public void categoryValidate(TransactionDtoRequest request, List<FieldError> errors){
+        Category category = categoryRepository.findById(request.getCategoryId()).orElse(null);
+
+        if(category == null){
+            errors.add(new FieldError("category",
+                    "Категория не найдена", "id"));
         }else{
-            boolean isValidCategoryType = VALID_CATEGORY.stream()
-                    .anyMatch(type -> type.equals(request.getCategory()));
-            if(!isValidCategoryType){
-                errors.add(new FieldError("Категория транзакции",
-                        "Неверный тип категории",
-                        request.getCategory().getCategoryType()));
+            String categoryName = category.getName();
+            TransactionType allowedType = VALID_PARE_CATEGORY_TRANSACTION.get(categoryName);
+
+            if (!allowedType.equals(request.getType())){
+                errors.add(new FieldError("Тип транзакции",
+                        "Категория " + categoryName + " разрешена только для типа: " + allowedType,
+                        allowedType.getDisplayName()));
             }
         }
-    }*/
+    }
 
     public void descriptionValidate(TransactionDtoRequest request, List<FieldError> errors){
         if(request.getDescription().length() > 50){
