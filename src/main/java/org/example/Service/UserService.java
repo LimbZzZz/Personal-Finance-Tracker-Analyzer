@@ -40,7 +40,7 @@ public class UserService {
 
     private User createUserEntity(UserDtoRequest request){
         User newUser = new User();
-        newUser.setName(request.getName());
+        newUser.setUsername(request.getName());
         newUser.setEmail(request.getEmail());
         newUser.setPassword(passwordEncoder.encode(request.getPassword()));
 
@@ -62,7 +62,7 @@ public class UserService {
     public UserDtoResponce mapToDtoResponce(User user){
         UserDtoResponce dto = new UserDtoResponce();
         dto.setId(user.getId());
-        dto.setName(user.getName());
+        dto.setName(user.getUsername());
         dto.setEmail(user.getEmail());
         dto.setCreatedAt(user.getCreatedAt());
         dto.setUpdatedAt(user.getUpdatedAt());

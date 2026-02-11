@@ -14,7 +14,7 @@ databaseChangeLog:
                   value: ellie@mail.ru
               - column:
                   name: password
-                  value: 1231234
+                  value: $2a$10$w3wUm4nwXdeGSESmzkhuve10VT2YGk/mSNMn3tPxhqjiuQjQyGPUy
         - insert:
             tableName: users
             columns:
@@ -26,7 +26,7 @@ databaseChangeLog:
                   value: billy@mail.ru
               - column:
                   name: password
-                  value: 5123512
+                  value: $2a$10$Zkd3uJ2nG4iX5lLw0YwQ7P8Q9R0s1t2u3v4w5x6y7z8A9B0C1D2E3F4
         - insert:
             tableName: users
             columns:
@@ -38,4 +38,4 @@ databaseChangeLog:
                   value: adam@mail.ru
               - column:
                   name: password
-                  value: 5161256
+                  value: $2a$10$Ale4uK3mH5jY6mMx1ZxR8S9T0U1v2w3x4y5z6A7B8C9D0E1F2G3H4I5

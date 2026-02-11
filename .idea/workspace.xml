@@ -16,8 +16,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -40,7 +40,7 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "C:/Users/vad_k/Desktop/Проекты/Prac"
+    "last_opened_file_path": "C:/Users/vad_k/Desktop/Проекты/PersonalFinanceTracker"
   }
 }]]></component>
   <component name="RunManager" selected="Application.Start">

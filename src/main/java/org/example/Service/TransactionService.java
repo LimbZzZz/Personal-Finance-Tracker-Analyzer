@@ -80,7 +80,7 @@ public class TransactionService {
                 .categoryId(transaction.getCategory().getId())
                 .date(transaction.getDate())
                 .description(transaction.getDescription())
-                .userName(transaction.getUser().getName())
+                .userName(transaction.getUser().getUsername())
                 .userId(transaction.getUser().getId())
                 .build();
     }
