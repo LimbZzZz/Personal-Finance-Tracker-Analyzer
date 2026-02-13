@@ -1,6 +1,7 @@
 package org.example.Service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.CustomException.TransactionNotFoundException;
 import org.example.CustomException.UserNotFoundException;
 import org.example.DTO.Transaction.TransactionDtoRequest;
@@ -19,6 +20,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class TransactionService{
@@ -63,18 +65,18 @@ public class TransactionService{
 
     @LogExecutionTime(description = "Получить все транзакции, имеющие указанную категорию")
     public List<TransactionDtoResponse> getTransactionsByCategory(String categoryName){
-        List<Transaction> transactionList = transactionRepository.findAll();
+        log.info("Поиск транзакций по категории: {}", categoryName);
+        List<Transaction> transactionList = transactionRepository.findByCategoryName(categoryName);
         return transactionList.stream()
-                .filter(item -> item.getCategory().getName().equals(categoryName))
                 .map(this::mapToTransaction)
                 .toList();
     }
 
     @LogExecutionTime(description = "Получить все транзакции, имеющие указанную компанию")
     public List<TransactionDtoResponse> getTransactionsByCompany(String companyName){
-        List<Transaction> transactionList = transactionRepository.findAll();
+        log.info("Поиск транзакций по компании: {}", companyName);
+        List<Transaction> transactionList = transactionRepository.findByCompanyName(companyName);
         return transactionList.stream()
-                .filter(item -> item.getCompany().getName().equals(companyName))
                 .map(this::mapToTransaction)
                 .toList();
     }

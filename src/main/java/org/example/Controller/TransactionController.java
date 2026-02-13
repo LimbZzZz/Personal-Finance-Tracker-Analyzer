@@ -2,6 +2,7 @@ package org.example.Controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.example.Controller.Documentation.TransactionControllerDocumentation;
 import org.example.DTO.Transaction.TransactionDtoRequest;
 import org.example.DTO.Transaction.TransactionDtoResponse;
 import org.example.Service.TransactionService;
@@ -14,11 +15,11 @@ import java.util.List;
 @RestController
 @RequestMapping("api/transaction")
 @RequiredArgsConstructor
-public class TransactionController {
+public class TransactionController implements TransactionControllerDocumentation {
     private final TransactionService transactionService;
 
 
-    @PostMapping("/create")
+    @Override
     public ResponseEntity<TransactionDtoResponse> createTransaction(@Valid @RequestBody TransactionDtoRequest request){
         TransactionDtoResponse createdTransaction = transactionService.createTransaction(request);
         return ResponseEntity
@@ -26,25 +27,25 @@ public class TransactionController {
                 .body(createdTransaction);
     }
 
-    @GetMapping("/get")
+    @Override
     public ResponseEntity<List<TransactionDtoResponse>> getTransactions(){
         return ResponseEntity.ok(transactionService.getAllTransactions());
     }
 
-    @GetMapping("/get/{transactionId}")
+    @Override
     public ResponseEntity<TransactionDtoResponse> getTransactionByid(@PathVariable Long transactionId){
         return ResponseEntity
                 .ok(transactionService.getTransactionById(transactionId));
     }
 
-    @GetMapping("/getByCategory/{categoryName}")
+    @Override
     public ResponseEntity<List<TransactionDtoResponse>> getTransactionsByCategoryName(@PathVariable String categoryName){
         List<TransactionDtoResponse> responces = transactionService.getTransactionsByCategory(categoryName);
         return ResponseEntity
                 .ok(responces);
     }
 
-    @GetMapping("/getByCompany/{companyName}")
+    @Override
     public ResponseEntity<List<TransactionDtoResponse>> getTransactionsByCompanyName(@PathVariable String companyName){
         List<TransactionDtoResponse> responces = transactionService.getTransactionsByCompany(companyName);
         return ResponseEntity

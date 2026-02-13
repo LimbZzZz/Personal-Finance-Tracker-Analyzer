@@ -30,7 +30,7 @@ public class UserService {
         User newUser = createUserEntity(userRequest);
         User savedUser = userRepository.save(newUser);
 
-        return mapToDtoResponce(savedUser);
+        return mapToDtoResponse(savedUser);
     }
 
     private void checkEmailUnique(String email){
@@ -51,7 +51,7 @@ public class UserService {
     @LogExecutionTime(description = "Поиск всех пользователей")
     public List<UserDtoResponse> findAllUsers(){
         return userRepository.findAll().stream()
-                .map(this::mapToDtoResponce)
+                .map(this::mapToDtoResponse)
                 .collect(Collectors.toList());
     }
 
@@ -59,10 +59,10 @@ public class UserService {
     public UserDtoResponse findUserById(Long id){
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
-        return mapToDtoResponce(user);
+        return mapToDtoResponse(user);
     }
 
-    public UserDtoResponse mapToDtoResponce(User user){
+    public UserDtoResponse mapToDtoResponse(User user){
         UserDtoResponse dto = new UserDtoResponse();
         dto.setId(user.getId());
         dto.setName(user.getUsername());

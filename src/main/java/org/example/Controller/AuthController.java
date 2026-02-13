@@ -3,6 +3,7 @@ package org.example.Controller;
 import lombok.RequiredArgsConstructor;
 import org.example.Repository.UserRepository;
 import org.example.Service.Security.JwtUtil;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,6 +26,7 @@ public class AuthController {
         return jwtUtil.generateToken(username);
     }
 
+    @Profile("dev")
     @GetMapping("auth/test-bcrypt")
     public String testBcrypt(@RequestParam String password, @RequestParam String hash) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -32,6 +34,7 @@ public class AuthController {
         return "Пароль: " + password + "\nХеш: " + hash + "\nСовпадает: " + matches;
     }
 
+    @Profile("dev")
     @GetMapping("/auth/generate-hash")
     public String generateHash(@RequestParam String password) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();

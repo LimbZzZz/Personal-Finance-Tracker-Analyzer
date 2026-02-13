@@ -2,10 +2,10 @@ package org.example.Service;
 
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
+import org.example.CustomException.AccountAlreadyExistException;
 import org.example.CustomException.InsufficientFundsException;
 import org.example.Entity.Account;
 import org.example.Repository.AccountRepository;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -21,6 +21,12 @@ public class AccountService extends BaseService<Account, Long>{
         this.accountRepository = accountRepository;
     }
 
+    public Account createAccount(Account account){
+        if (accountRepository.findById(account.getId()).isPresent()){
+            throw new AccountAlreadyExistException(account.getCardNumber());
+        }
+        return accountRepository.save(account);
+    }
     public BigDecimal getCurrentBalanceFromOnceCard(Long id){
         return findById(id).getTotalAccount();
     }

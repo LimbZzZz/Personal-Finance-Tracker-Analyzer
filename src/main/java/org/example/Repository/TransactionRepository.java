@@ -4,6 +4,10 @@ import org.example.Entity.Transaction;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
+    List<Transaction> findByCategoryName(String categoryName);
+    List<Transaction> findByCompanyName(String companyName);
 }
