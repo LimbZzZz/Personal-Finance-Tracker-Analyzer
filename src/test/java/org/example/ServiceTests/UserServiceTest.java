@@ -1,8 +1,8 @@
 package org.example.ServiceTests;
 
-import org.example.CustomException.UserExceptions.EmailAlreadyExistException;
+import org.example.CustomException.EmailAlreadyExistException;
 import org.example.DTO.User.UserDtoRequest;
-import org.example.DTO.User.UserDtoResponce;
+import org.example.DTO.User.UserDtoResponse;
 import org.example.Entity.User;
 import org.example.Repository.UserRepository;
 import org.example.Service.UserService;
@@ -47,7 +47,7 @@ public class UserServiceTest {
 
         savedUser = User.builder()
                 .id(1L)
-                .name("SomeName")
+                .username("SomeName")
                 .email("SomeEmail@mail.ru")
                 .password("SomePassword")
                 .createdAt(LocalDateTime.now())
@@ -65,7 +65,7 @@ public class UserServiceTest {
         when(userRepository.save(any(User.class)))
                 .thenReturn(savedUser);
 
-        UserDtoResponce responce = userService.createUser(validRequest);
+        UserDtoResponse responce = userService.createUser(validRequest);
 
         assertThat(responce).isNotNull();
         assertThat(responce.getId()).isEqualTo(1L);
@@ -122,13 +122,13 @@ public class UserServiceTest {
     public void findAllUsers_ShouldViewAllUsers_WhenRepositoryNotEmpty(){
         User user1 = new User().builder()
                 .id(1L)
-                .name("name1")
+                .username("name1")
                 .email("email1@mail.ru")
                 .password("password1")
                 .build();
         User user2 = new User().builder()
                 .id(2L)
-                .name("name2")
+                .username("name2")
                 .email("email2@mail.ru")
                 .password("password2")
                 .build();
@@ -136,11 +136,11 @@ public class UserServiceTest {
 
         when(userRepository.findAll()).thenReturn(userList);
 
-        List<UserDtoResponce> responce = userService.findAllUsers();
+        List<UserDtoResponse> responce = userService.findAllUsers();
 
         assertThat(responce)
                 .hasSize(2)
-                .extracting(UserDtoResponce::getId, UserDtoResponce::getName, UserDtoResponce::getEmail)
+                .extracting(UserDtoResponse::getId, UserDtoResponse::getName, UserDtoResponse::getEmail)
                 .containsExactly(
                         tuple(1L, "name1", "email1@mail.ru"),
                         tuple(2L, "name2", "email2@mail.ru")

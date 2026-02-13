@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.example.Enum.CategoryType;
 import org.example.Enum.TransactionType;
 
 import java.math.BigDecimal;
@@ -24,6 +23,7 @@ public class Transaction {
     private Long id;
     @Column(name = "sum")
     private BigDecimal sum;
+    @Enumerated(EnumType.STRING)
     @Column(name = "type")
     private TransactionType type;
     @Column(name = "date")
@@ -36,15 +36,13 @@ public class Transaction {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
-    @OneToMany(mappedBy = "transaction", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Company> companyList;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "company_id", nullable = false)
+    private Company company;
 
     @PrePersist
     private void onCreateDate(){
         date = LocalDateTime.now();
     }
 
-    public void addCompanyToCompanyList(Company company){
-        companyList.add(company);
-    }
 }

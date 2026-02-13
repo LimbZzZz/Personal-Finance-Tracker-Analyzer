@@ -2,7 +2,7 @@ package org.example.Enum;
 
 public enum TransactionType {
     INCOME("Доход"),
-    EXPENCE("Расход");
+    EXPENSE("Расход");
 
     private final String displayName;
 

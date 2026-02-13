@@ -11,7 +11,7 @@ databaseChangeLog:
                   value: 1000
               - column:
                   name: type
-                  value: EXPENCE
+                  value: EXPENSE
               - column:
                   name: description
                   value: some description
@@ -29,7 +29,7 @@ databaseChangeLog:
                   value: 5000
               - column:
                   name: type
-                  value: EXPENCE
+                  value: EXPENSE
               - column:
                   name: description
                   value: some description 2
@@ -47,7 +47,7 @@ databaseChangeLog:
                   value: 50000
               - column:
                   name: type
-                  value: EXPENCE
+                  value: EXPENSE
               - column:
                   name: description
                   value: some description

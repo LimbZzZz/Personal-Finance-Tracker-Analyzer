@@ -36,13 +36,13 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "C:/Users/vad_k/Desktop/Проекты/PersonalFinanceTracker"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/vad_k/Desktop/Проекты/PersonalFinanceTracker&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Application.Start">
     <configuration name="Start" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="org.example.PersonalFinanceTrackerApplication" />
@@ -82,22 +82,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TransactionServiceTest.createTransaction_shouldSaveTransaction_WhenDataIsValid" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="PersonalFinanceTracker" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="org.example.ServiceTests.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="org.example.ServiceTests" />
-      <option name="MAIN_CLASS_NAME" value="org.example.ServiceTests.TransactionServiceTest" />
-      <option name="METHOD_NAME" value="createTransaction_shouldSaveTransaction_WhenDataIsValid" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="TransactionServiceTest.findAllUsers_ShouldViewAllUsers_WhenRepositoryNotEmpty" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="PersonalFinanceTracker" />
       <extension name="coverage">
@@ -130,21 +114,36 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="UserServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="PersonalFinanceTracker" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.example.ServiceTests.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.example.ServiceTests" />
+      <option name="MAIN_CLASS_NAME" value="org.example.ServiceTests.UserServiceTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <list>
       <item itemvalue="Application.Start" />
+      <item itemvalue="JUnit.UserServiceTest" />
       <item itemvalue="JUnit.TransactionServiceTest.createTransaction_shouldException_WhenDataIsIncorrect" />
       <item itemvalue="JUnit.TransactionServiceTest.findAllUsers_ShouldViewAllUsers_WhenRepositoryNotEmpty" />
       <item itemvalue="JUnit.TransactionServiceTest.findTransactionById_ShouldReturn_WhenIdIsValid" />
       <item itemvalue="JUnit.TransactionServiceTest" />
-      <item itemvalue="JUnit.TransactionServiceTest.createTransaction_shouldSaveTransaction_WhenDataIsValid" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.UserServiceTest" />
         <item itemvalue="JUnit.TransactionServiceTest" />
         <item itemvalue="JUnit.TransactionServiceTest.findAllUsers_ShouldViewAllUsers_WhenRepositoryNotEmpty" />
         <item itemvalue="JUnit.TransactionServiceTest.findTransactionById_ShouldReturn_WhenIdIsValid" />
         <item itemvalue="JUnit.TransactionServiceTest.createTransaction_shouldException_WhenDataIsIncorrect" />
-        <item itemvalue="JUnit.TransactionServiceTest.createTransaction_shouldSaveTransaction_WhenDataIsValid" />
       </list>
     </recent_temporary>
   </component>

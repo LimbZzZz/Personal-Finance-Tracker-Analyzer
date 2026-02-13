@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "accounts")
 @Data
@@ -17,7 +19,7 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "total_account", nullable = false)
-    private Double totalAccount;
+    private BigDecimal totalAccount;
     @Column(name = "bank", nullable = false)
     private String bank;
     @Column(name = "card_number", nullable = false)

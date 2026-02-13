@@ -1,14 +1,14 @@
 package org.example.Service;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.example.CustomException.UserExceptions.EmailAlreadyExistException;
-import org.example.CustomException.UserExceptions.UserNotFoundException;
+import org.example.CustomException.EmailAlreadyExistException;
+import org.example.CustomException.UserNotFoundException;
 import org.example.Entity.User;
 import org.example.DTO.User.UserDtoRequest;
-import org.example.DTO.User.UserDtoResponce;
+import org.example.DTO.User.UserDtoResponse;
 import org.example.Repository.UserRepository;
-import org.example.Validator.UserValidator.UserValidator;
+import org.example.Service.AOP.LogExecutionTime;
+import org.example.Validator.UserValidator.UserBusinessValidator;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,10 +21,11 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    private final UserValidator validatorController;
+    private final UserBusinessValidator validator;
 
-    public UserDtoResponce createUser(UserDtoRequest userRequest){
-        validatorController.fullValidation(userRequest);
+    @LogExecutionTime(description = "Создание пользователя")
+    public UserDtoResponse createUser(UserDtoRequest userRequest){
+        validator.fullValidate(userRequest);
         checkEmailUnique(userRequest.getEmail());
         User newUser = createUserEntity(userRequest);
         User savedUser = userRepository.save(newUser);
@@ -47,20 +48,22 @@ public class UserService {
         return newUser;
     }
 
-    public List<UserDtoResponce> findAllUsers(){
+    @LogExecutionTime(description = "Поиск всех пользователей")
+    public List<UserDtoResponse> findAllUsers(){
         return userRepository.findAll().stream()
                 .map(this::mapToDtoResponce)
                 .collect(Collectors.toList());
     }
 
-    public UserDtoResponce findUserById(Long id){
+    @LogExecutionTime(description = "Поиск пользователя по ID")
+    public UserDtoResponse findUserById(Long id){
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
         return mapToDtoResponce(user);
     }
 
-    public UserDtoResponce mapToDtoResponce(User user){
-        UserDtoResponce dto = new UserDtoResponce();
+    public UserDtoResponse mapToDtoResponce(User user){
+        UserDtoResponse dto = new UserDtoResponse();
         dto.setId(user.getId());
         dto.setName(user.getUsername());
         dto.setEmail(user.getEmail());

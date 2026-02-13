@@ -1,8 +1,9 @@
 package org.example.Validator.TransactionValidator;
 
 import lombok.RequiredArgsConstructor;
-import org.example.CustomException.TransactionExceptions.FieldError;
-import org.example.CustomException.TransactionExceptions.ValidationTransactionException;
+import lombok.extern.slf4j.Slf4j;
+import org.example.CustomException.FieldError;
+import org.example.CustomException.ValidationTransactionException;
 import org.example.DTO.Transaction.TransactionDtoRequest;
 import org.example.Entity.Category;
 import org.example.Enum.TransactionType;
@@ -11,38 +12,47 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class TransactionBusinessValidator {
     private static final List<TransactionType> VALID_TYPES = List.of(
-            TransactionType.EXPENCE, TransactionType.INCOME
+            TransactionType.EXPENSE, TransactionType.INCOME
     );
 
     private final CategoryRepository categoryRepository;
 
     private static final Map<String, TransactionType> VALID_PARE_CATEGORY_TRANSACTION = Map.of(
-            "Развлечения", TransactionType.EXPENCE,
+            "Развлечения", TransactionType.EXPENSE,
             "Ресторан", TransactionType.INCOME,
             "Кафе", TransactionType.INCOME,
-            "Кино", TransactionType.EXPENCE
+            "Кино", TransactionType.EXPENSE
     );
 
     public void fullValidate(TransactionDtoRequest request) {
 
         List<FieldError> errors = new ArrayList<>();
-        //Ошибка в типе транзакции
         typeValidate(request, errors);
-        //Ошибка категории транзакции
-        //categoryValidate(request, errors);
-        //Ошибка описания транзакции
+        categoryValidate(request, errors);
         descriptionValidate(request, errors);
-        //Ошибка суммы транзакции
         sumValidate(request, errors);
-        //Ошибка принадлежности транзакции
         userIdValidate(request, errors);
 
-        if(errors.size() > 0){
+        if(!errors.isEmpty()){
+            log.error("Ошибка создания транзакции: Type: {}, Category: {}, Company: {}, Sum: {}" +
+                            "\nОшибки: {}",
+                    request.getType(),
+                    request.getCategoryId(),
+                    request.getCompanyId(),
+                    request.getSum(),
+                    errors);
             throw new ValidationTransactionException(errors);
+        }else{
+            log.error("Транзакция успешно создана: Type: {}, Category: {}, Company: {}, Sum: {}",
+                    request.getType(),
+                    request.getCategoryId(),
+                    request.getCompanyId(),
+                    request.getSum());
         }
     }
 

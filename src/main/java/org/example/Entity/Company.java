@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Table(name = "company")
 @Data
@@ -18,7 +20,6 @@ public class Company {
     private Long id;
     @Column(name = "company_name", unique = true, nullable = false)
     private String name;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "transaction_id", nullable = false)
-    private Transaction transaction;
+    @OneToMany(mappedBy = "company")
+    private List<Transaction> transaction;
 }

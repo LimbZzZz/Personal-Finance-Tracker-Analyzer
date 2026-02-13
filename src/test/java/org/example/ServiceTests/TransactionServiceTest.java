@@ -1,12 +1,13 @@
 package org.example.ServiceTests;
 
-import org.example.CustomException.TransactionExceptions.ValidationTransactionException;
+import org.example.CustomException.ValidationTransactionException;
 import org.example.DTO.Transaction.TransactionDtoRequest;
-import org.example.DTO.Transaction.TransactionDtoResponce;
+import org.example.DTO.Transaction.TransactionDtoResponse;
+import org.example.Entity.Category;
 import org.example.Entity.Transaction;
 import org.example.Entity.User;
-import org.example.Enum.CategoryType;
 import org.example.Enum.TransactionType;
+import org.example.Repository.CategoryRepository;
 import org.example.Repository.TransactionRepository;
 import org.example.Repository.UserRepository;
 import org.example.Service.TransactionService;
@@ -36,10 +37,13 @@ public class TransactionServiceTest {
 
     @Mock
     private TransactionBusinessValidator businessValidator;
+    @Mock
+    private CategoryRepository categoryRepository;
 
     @InjectMocks
     private TransactionService transactionService;
     private User savedUser;
+    private Category savedCategory;
     private TransactionDtoRequest validRequest;
     private Transaction savedTransaction;
 
@@ -47,17 +51,23 @@ public class TransactionServiceTest {
     void initialize(){
         savedUser = User.builder()
                 .id(1L)
-                .name("SomeName")
+                .username("SomeName")
                 .email("SomeEmail@mail.ru")
                 .password("SomePassword")
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .build();
 
+        savedCategory = Category.builder()
+                .id(1L)
+                .name("Развлечения")
+                .color("961de0")
+                .build();
+
         validRequest = TransactionDtoRequest.builder()
                 .sum(BigDecimal.valueOf(1000))
                 .type(TransactionType.EXPENCE)
-                .category(CategoryType.PRODUCTS)
+                .categoryId(1L)
                 .description("Some description")
                 .userId(1L)
                 .build();
@@ -66,7 +76,7 @@ public class TransactionServiceTest {
                 .id(1L)
                 .sum(BigDecimal.valueOf(1000))
                 .type(TransactionType.EXPENCE)
-                .category(CategoryType.PRODUCTS)
+                .category(savedCategory)
                 .date(LocalDateTime.now())
                 .description("Some description")
                 .user(savedUser)
@@ -76,14 +86,15 @@ public class TransactionServiceTest {
     @Test
     public void createTransaction_shouldSaveTransaction_WhenDataIsValid(){
         when(userRepository.findById(1L)).thenReturn(Optional.of(savedUser));
+        when(categoryRepository.findById(1L)).thenReturn(Optional.of(savedCategory));
         when(transactionRepository.save(any(Transaction.class))).thenReturn(savedTransaction);
 
-        TransactionDtoResponce response = transactionService.createTransaction(validRequest);
+        TransactionDtoResponse response = transactionService.createTransaction(validRequest);
 
         assertThat(response).isNotNull();
         assertThat(response.getId()).isEqualTo(1L);
         assertThat(response.getType()).isEqualTo(TransactionType.EXPENCE);
-        assertThat(response.getCategory()).isEqualTo(CategoryType.PRODUCTS);
+        assertThat(response.getCategoryName()).isEqualTo("Развлечения");
         assertThat(response.getDescription()).isEqualTo("Some description");
         assertThat(response.getSum()).isEqualByComparingTo(BigDecimal.valueOf(1000));
         assertThat(response.getUserId()).isEqualTo(1L);
@@ -100,10 +111,10 @@ public class TransactionServiceTest {
                 .when(businessValidator).fullValidate(any(TransactionDtoRequest.class));
 
         List<TransactionDtoRequest> invalidRequest = List.of(
-                TransactionDtoRequest.builder().type(null).category(CategoryType.CAFE).description("some descr").sum(BigDecimal.valueOf(1000)).userId(1L).build(),
-                TransactionDtoRequest.builder().type(TransactionType.EXPENCE).category(null).description("some descr").sum(BigDecimal.valueOf(1000)).userId(1L).build(),
-                TransactionDtoRequest.builder().type(TransactionType.EXPENCE).category(CategoryType.CAFE).description("test".repeat(51)).sum(BigDecimal.valueOf(1000)).userId(1L).build(),
-                TransactionDtoRequest.builder().type(TransactionType.EXPENCE).category(CategoryType.CAFE).description("some descr").sum(BigDecimal.valueOf(-1)).userId(1L).build()
+                TransactionDtoRequest.builder().type(null).categoryId(1L).description("some descr").sum(BigDecimal.valueOf(1000)).userId(1L).build(),
+                TransactionDtoRequest.builder().type(TransactionType.EXPENCE).categoryId(1L).description("some descr").sum(BigDecimal.valueOf(1000)).userId(1L).build(),
+                TransactionDtoRequest.builder().type(TransactionType.EXPENCE).categoryId(1L).description("test".repeat(51)).sum(BigDecimal.valueOf(1000)).userId(1L).build(),
+                TransactionDtoRequest.builder().type(TransactionType.EXPENCE).categoryId(1L).description("some descr").sum(BigDecimal.valueOf(-1)).userId(1L).build()
         );
 
         for(TransactionDtoRequest request : invalidRequest){
@@ -120,7 +131,7 @@ public class TransactionServiceTest {
         Long transactionId = 1L;
         when(transactionRepository.findById(transactionId)).thenReturn(Optional.of(savedTransaction));
 
-        TransactionDtoResponce transaction = transactionService.getTransactionById(1L);
+        TransactionDtoResponse transaction = transactionService.getTransactionById(1L);
 
         assertThat(transaction).isNotNull();
         assertThat(transaction.getId()).isEqualTo(1L);
@@ -134,7 +145,7 @@ public class TransactionServiceTest {
                 .id(1L)
                 .sum(BigDecimal.valueOf(1000))
                 .type(TransactionType.EXPENCE)
-                .category(CategoryType.CAFE)
+                .category(savedCategory)
                 .date(LocalDateTime.now())
                 .description("some descr")
                 .user(savedUser)
@@ -143,7 +154,7 @@ public class TransactionServiceTest {
                 .id(2L)
                 .sum(BigDecimal.valueOf(2000))
                 .type(TransactionType.EXPENCE)
-                .category(CategoryType.RESTOURANT)
+                .category(savedCategory)
                 .date(LocalDateTime.now())
                 .description("some descr")
                 .user(savedUser)
@@ -152,19 +163,19 @@ public class TransactionServiceTest {
 
         when(transactionRepository.findAll()).thenReturn(transactionList);
 
-        List<TransactionDtoResponce> responce = transactionService.getAllTransactions();
+        List<TransactionDtoResponse> responce = transactionService.getAllTransactions();
 
         assertThat(responce)
                 .hasSize(2)
-                .extracting(TransactionDtoResponce::getId, TransactionDtoResponce::getSum,
-                        TransactionDtoResponce::getType, TransactionDtoResponce::getCategory,
-                        TransactionDtoResponce::getDate, TransactionDtoResponce::getDescription,
-                        TransactionDtoResponce::getUserId, TransactionDtoResponce::getUserName)
+                .extracting(TransactionDtoResponse::getId, TransactionDtoResponse::getSum,
+                        TransactionDtoResponse::getType, TransactionDtoResponse::getCategoryName,
+                        TransactionDtoResponse::getDate, TransactionDtoResponse::getDescription,
+                        TransactionDtoResponse::getUserId, TransactionDtoResponse::getUserName)
                 .containsExactly(
                         tuple(1L, BigDecimal.valueOf(1000), TransactionType.EXPENCE,
-                                CategoryType.CAFE, transaction1.getDate(), "some descr", savedUser.getId(), savedUser.getName()),
+                                savedCategory.getName(), transaction1.getDate(), "some descr", savedUser.getId(), savedUser.getUsername()),
                         tuple(2L, BigDecimal.valueOf(2000), TransactionType.EXPENCE,
-                                CategoryType.RESTOURANT, transaction2.getDate(), "some descr", savedUser.getId(), savedUser.getName())
+                                savedCategory.getName(), transaction2.getDate(), "some descr", savedUser.getId(), savedUser.getUsername())
                 );
 
         verify(transactionRepository).findAll();

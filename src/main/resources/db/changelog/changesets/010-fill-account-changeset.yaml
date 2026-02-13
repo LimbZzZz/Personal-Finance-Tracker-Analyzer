@@ -8,7 +8,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: total_account
-                  value: 5000.0
+                  value: 5000
               - column:
                   name: bank
                   value: tBank
