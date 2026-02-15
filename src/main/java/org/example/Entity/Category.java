@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.Enum.TransactionType;
 
 import java.util.List;
 
@@ -22,6 +23,8 @@ public class Category {
     private String name;
     @Column(name = "color", unique = true)
     private String color;
+    @Enumerated(EnumType.STRING)
+    private TransactionType type;
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Transaction> transactionList;
+    private List<Transaction> transactions;
 }

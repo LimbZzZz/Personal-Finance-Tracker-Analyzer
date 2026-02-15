@@ -4,7 +4,7 @@ import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.CustomException.FieldError;
-import org.example.DTO.User.UserDtoRequest;
+import org.example.DTO.Request.UserDtoRequest;
 import org.example.Repository.UserRepository;
 import org.springframework.stereotype.Component;
 

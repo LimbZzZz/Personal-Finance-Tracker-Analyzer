@@ -7,8 +7,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.example.DTO.Transaction.TransactionDtoRequest;
-import org.example.DTO.Transaction.TransactionDtoResponse;
+import org.example.DTO.Request.TransactionDtoRequest;
+import org.example.DTO.Response.TransactionDtoResponse;
 import org.springframework.http.ResponseEntity;
 import org.example.CustomException.ErrorResponse;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -87,6 +87,7 @@ public interface TransactionControllerDocumentation {
     })
     ResponseEntity<List<TransactionDtoResponse>> getTransactionsByCategoryName(@PathVariable String categoryName);
 
+    @GetMapping("/getByCompany/{companyName}")
     @Operation(summary = "Получить транзакцию по названию компании")
     @ApiResponses({
             @ApiResponse(responseCode = "200",
@@ -102,6 +103,5 @@ public interface TransactionControllerDocumentation {
                             schema = @Schema(implementation = ErrorResponse.class)
                     )),
     })
-    @GetMapping("/getByCompany/{companyName}")
     ResponseEntity<List<TransactionDtoResponse>> getTransactionsByCompanyName(@PathVariable String companyName);
 }

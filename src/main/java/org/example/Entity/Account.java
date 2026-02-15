@@ -24,6 +24,8 @@ public class Account {
     private String bank;
     @Column(name = "card_number", nullable = false)
     private String cardNumber;
+    @Column(name = "is_active", nullable = false)
+    private boolean isActive;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;

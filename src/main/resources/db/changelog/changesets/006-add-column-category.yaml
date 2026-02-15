@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: 006-add-category-type-column
+      author: JeeZ
+      changes:
+        - addColumn:
+            tableName: category
+            columns:
+              - column:
+                  name: type
+                  type: VARCHAR(20)
+                  constraints:
+                    nullable: false

@@ -21,5 +21,5 @@ public class Company {
     @Column(name = "company_name", unique = true, nullable = false)
     private String name;
     @OneToMany(mappedBy = "company")
-    private List<Transaction> transaction;
+    private List<Transaction> transactions;
 }

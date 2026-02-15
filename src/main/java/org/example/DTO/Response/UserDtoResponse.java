@@ -1,4 +1,4 @@
-package org.example.DTO.User;
+package org.example.DTO.Response;
 
 import lombok.Data;
 

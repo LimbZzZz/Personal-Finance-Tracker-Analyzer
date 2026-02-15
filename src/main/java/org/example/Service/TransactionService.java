@@ -2,14 +2,15 @@ package org.example.Service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.CustomException.CategoryNotFoundException;
 import org.example.CustomException.TransactionNotFoundException;
 import org.example.CustomException.UserNotFoundException;
-import org.example.DTO.Transaction.TransactionDtoRequest;
-import org.example.DTO.Transaction.TransactionDtoResponse;
+import org.example.DTO.Request.TransactionDtoRequest;
+import org.example.DTO.Response.TransactionDtoResponse;
+import org.example.Entity.Account;
 import org.example.Entity.Transaction;
 import org.example.Entity.User;
 import org.example.Repository.CategoryRepository;
-import org.example.Repository.CompanyRepository;
 import org.example.Repository.TransactionRepository;
 import org.example.Repository.UserRepository;
 import org.example.Service.AOP.LogExecutionTime;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -27,28 +29,39 @@ public class TransactionService{
     private final TransactionRepository transactionRepository;
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
+    private final CompanyService companyService;
+    private final AccountService accountService;
     private final TransactionBusinessValidator validator;
 
     @LogExecutionTime(description = "Создание транзакции")
     public TransactionDtoResponse createTransaction(TransactionDtoRequest request){
         validator.fullValidate(request);
+        Transaction savedTransaction = transactionRepository.save(createTransactionEntity(request));
+        subtractValueFromAccount(request);
+        return mapToTransaction(savedTransaction);
+    }
 
+    private Transaction createTransactionEntity(TransactionDtoRequest request){
         User user = userRepository.findById(request.getUserId())
                 .orElseThrow(() -> new UserNotFoundException(request.getUserId()));
 
         Transaction newTransaction = new Transaction();
+
         newTransaction.setCategory(categoryRepository.findById(request.getCategoryId())
-                .orElseThrow(() -> new IllegalArgumentException()));
+                .orElseThrow(() -> new CategoryNotFoundException(request.getCategoryId())));
         newTransaction.setType(request.getType());
         newTransaction.setDescription(request.getDescription());
         newTransaction.setSum(request.getSum());
         newTransaction.setUser(user);
         newTransaction.setDate(LocalDateTime.now());
+        newTransaction.setCompany(companyService.findById(request.getCompanyId()));
 
-        Transaction savedTransaction = transactionRepository.save(newTransaction);
-        return mapToTransaction(savedTransaction);
+        return newTransaction;
     }
 
+    private void subtractValueFromAccount(TransactionDtoRequest request){
+        accountService.subtractFromAccount(request.getSum());
+    }
     @LogExecutionTime(description = "Получить все транзакции")
     public List<TransactionDtoResponse> getAllTransactions(){
         return transactionRepository.findAll().stream()
@@ -86,11 +99,11 @@ public class TransactionService{
                 .id(transaction.getId())
                 .sum(transaction.getSum())
                 .type(transaction.getType())
-                .categoryName(transaction.getCategory().getName())
+                .categoryMap(Map.of(transaction.getCategory().getId(), transaction.getCategory().getName()))
                 .date(transaction.getDate())
                 .description(transaction.getDescription())
-                .userName(transaction.getUser().getUsername())
-                .userId(transaction.getUser().getId())
+                .userMap(Map.of(transaction.getUser().getId(), transaction.getUser().getUsername()))
+                .companyMap(Map.of(transaction.getCompany().getId(), transaction.getCompany().getName()))
                 .build();
     }
 }

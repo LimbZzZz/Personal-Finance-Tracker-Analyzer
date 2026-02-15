@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 005-create-company-table
+      id: 003-create-company-table
       author: JeeZ
       changes:
         - createTable:

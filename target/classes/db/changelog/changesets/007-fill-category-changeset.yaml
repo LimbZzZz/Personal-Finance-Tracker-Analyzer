@@ -3,39 +3,126 @@ databaseChangeLog:
       id: 007-fill-category-changeset
       author: JeeZ
       changes:
+        # Income
         - insert:
             tableName: category
             columns:
               - column:
                   name: category_type
-                  value: Развлечения
+                  value: Зарплата
               - column:
                   name: color
-                  value: 961de0
+                  value: 28a745
+              - column:
+                  name: type
+                  value: INCOME
         - insert:
             tableName: category
             columns:
               - column:
                   name: category_type
-                  value: Ресторан
+                  value: Фриланс
               - column:
                   name: color
-                  value: 1d3ee0
+                  value: 17a2b8
+              - column:
+                  name: type
+                  value: INCOME
         - insert:
             tableName: category
             columns:
               - column:
                   name: category_type
-                  value: Кафе
+                  value: Инвестиции
               - column:
                   name: color
-                  value: 1dd3e0
+                  value: 007bff
+              - column:
+                  name: type
+                  value: INCOME
         - insert:
             tableName: category
             columns:
               - column:
                   name: category_type
-                  value: Кино
+                  value: Подарки
               - column:
                   name: color
-                  value: 1de082
+                  value: 6f42c1
+              - column:
+                  name: type
+                  value: INCOME
+        - insert:
+            tableName: category
+            columns:
+              - column:
+                  name: category_type
+                  value: Аренда
+              - column:
+                  name: color
+                  value: 20c997
+              - column:
+                  name: type
+                  value: INCOME
+
+        # Expense
+        - insert:
+            tableName: category
+            columns:
+              - column:
+                  name: category_type
+                  value: Супермаркеты
+              - column:
+                  name: color
+                  value: dc3545
+              - column:
+                  name: type
+                  value: EXPENSE
+        - insert:
+            tableName: category
+            columns:
+              - column:
+                  name: category_type
+                  value: Рестораны
+              - column:
+                  name: color
+                  value: fd7e14
+              - column:
+                  name: type
+                  value: EXPENSE
+        - insert:
+            tableName: category
+            columns:
+              - column:
+                  name: category_type
+                  value: Транспорт
+              - column:
+                  name: color
+                  value: 6c757d
+              - column:
+                  name: type
+                  value: EXPENSE
+        - insert:
+            tableName: category
+            columns:
+              - column:
+                  name: category_type
+                  value: Здоровье
+              - column:
+                  name: color
+                  value: 22ac72
+              - column:
+                  name: type
+                  value: EXPENSE
+        - insert:
+            tableName: category
+            columns:
+              - column:
+                  name: category_type
+                  value: Образование
+              - column:
+                  name: color
+                  value: 6610f2
+              - column:
+                  name: type
+                  value: EXPENSE

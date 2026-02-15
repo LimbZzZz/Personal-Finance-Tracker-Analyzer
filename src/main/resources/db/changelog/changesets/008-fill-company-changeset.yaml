@@ -1,0 +1,65 @@
+databaseChangeLog:
+  - changeSet:
+      id: 008-fill-company-changeset
+      author: JeeZ
+      changes:
+        - insert:
+            tableName: company
+            columns:
+              - column:
+                  name: company_name
+                  value: McDonald's
+        - insert:
+            tableName: company
+            columns:
+              - column:
+                  name: company_name
+                  value: KFC
+        - insert:
+            tableName: company
+            columns:
+              - column:
+                  name: company_name
+                  value: Pizza Hut
+        - insert:
+            tableName: company
+            columns:
+              - column:
+                  name: company_name
+                  value: Starbucks
+        - insert:
+            tableName: company
+            columns:
+              - column:
+                  name: company_name
+                  value: Burger King
+        - insert:
+            tableName: company
+            columns:
+              - column:
+                  name: company_name
+                  value: Auchan
+        - insert:
+            tableName: company
+            columns:
+              - column:
+                  name: company_name
+                  value: Perekrestok
+        - insert:
+            tableName: company
+            columns:
+              - column:
+                  name: company_name
+                  value: Lenta
+        - insert:
+            tableName: company
+            columns:
+              - column:
+                  name: company_name
+                  value: Dodo Pizza
+        - insert:
+            tableName: company
+            columns:
+              - column:
+                  name: company_name
+                  value: Teremok

@@ -1,4 +1,4 @@
-package org.example.DTO.Transaction;
+package org.example.DTO.Request;
 
 import jakarta.validation.constraints.*;
 import lombok.Builder;

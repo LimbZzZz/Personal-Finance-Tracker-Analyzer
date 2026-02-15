@@ -1,8 +1,8 @@
 package org.example.ServiceTests;
 
 import org.example.CustomException.EmailAlreadyExistException;
-import org.example.DTO.User.UserDtoRequest;
-import org.example.DTO.User.UserDtoResponse;
+import org.example.DTO.Request.UserDtoRequest;
+import org.example.DTO.Response.UserDtoResponse;
 import org.example.Entity.User;
 import org.example.Repository.UserRepository;
 import org.example.Service.UserService;
