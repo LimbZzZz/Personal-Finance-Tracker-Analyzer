@@ -24,6 +24,6 @@ public class TransactionDtoRequest {
     @NotNull(message = "ID категории не может быть пустой")
     @Positive(message = "ID категории должен быть положительным")
     private Long categoryId;
-    @Positive(message = "ID кампании должен быть положительным")
+    @Positive(message = "ID компании должен быть положительным")
     private Long companyId;
 }

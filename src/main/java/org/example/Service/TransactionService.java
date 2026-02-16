@@ -36,16 +36,18 @@ public class TransactionService{
     @LogExecutionTime(description = "Создание транзакции")
     public TransactionDtoResponse createTransaction(TransactionDtoRequest request){
         validator.fullValidate(request);
-        Transaction savedTransaction = transactionRepository.save(createTransactionEntity(request));
+
+        Transaction transaction = createTransactionEntity(request);
+        Transaction savedTransaction = transactionRepository.save(transaction);
+
         subtractValueFromAccount(request);
+
         return mapToTransaction(savedTransaction);
     }
 
     private Transaction createTransactionEntity(TransactionDtoRequest request){
-        User user = userRepository.findById(request.getUserId())
-                .orElseThrow(() -> new UserNotFoundException(request.getUserId()));
-
         Transaction newTransaction = new Transaction();
+        User user = userRepository.getReferenceById(request.getUserId());
 
         newTransaction.setCategory(categoryRepository.findById(request.getCategoryId())
                 .orElseThrow(() -> new CategoryNotFoundException(request.getCategoryId())));

@@ -29,6 +29,10 @@ spring:
     default-schema: public
     drop-first: true
 
+jwt:
+  secret: R7j54XCGxuuxDqAzGgdL20tx8uayFct5K6UA3ZcP0Fk
+  expiration: 3600000
+
 springdoc:
   api-docs:
     path: /api/api-docs

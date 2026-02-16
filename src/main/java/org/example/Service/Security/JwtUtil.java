@@ -18,8 +18,10 @@ import java.util.function.Function;
 @Component
 @RequiredArgsConstructor
 public class JwtUtil {
-    private String secretKey = "R7j54XCGxuuxDqAzGgdL20tx8uayFct5K6UA3ZcP0Fk";
-    private Long jwtExpiration = 3600000L;
+    @Value("${jwt.secret}")
+    private String secretKey;
+    @Value("${jwt.expiration}")
+    private Long jwtExpiration;
 
     public String generateToken(String username){
         Map<String, Object> claims = new HashMap<>();

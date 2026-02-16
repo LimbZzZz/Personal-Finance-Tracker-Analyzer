@@ -20,8 +20,7 @@ public class UserBusinessValidator {
 
     public void fullValidate(UserDtoRequest request){
         List<FieldError> errors = new ArrayList<>();
-        emailValidate(request, errors);
-
+        validateEmailUnique(request, errors);
         if(!errors.isEmpty()){
             log.error("Валидация пользователя провалена. Email: {}, Имя: {}, Ошибки: {}",
                     request.getEmail(),
@@ -32,12 +31,12 @@ public class UserBusinessValidator {
             log.debug("Пользователь {} успешно прошел валидацию", request.getEmail());
         }
     }
-    public void emailValidate(UserDtoRequest request, List<FieldError> errors) {
-        String email = request.getEmail();
-        if(email == null || email.trim().isEmpty()){
-            errors.add(new FieldError("email",
-                    "Email не может быть пустым",
-                    "Текущее значение email - " + email));
+
+    public void validateEmailUnique(UserDtoRequest request, List<FieldError> errors){
+        if(userRepository.existsByEmail(request.getEmail())){
+            errors.add(new FieldError("Email",
+                    "Email уже используется",
+                    request.getEmail()));
         }
     }
 
