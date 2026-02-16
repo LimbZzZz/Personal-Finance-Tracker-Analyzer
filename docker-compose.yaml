@@ -1,0 +1,45 @@
+services:
+  postgres_db:
+    image: postgres:15-alpine
+    container_name: finance_tracker_db
+    environment:
+      POSTGRES_DB: PersonalFinanceDB
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: VSKOROB2
+    ports:
+      - "5432:5432"
+    networks:
+      - finance_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d PersonalFinanceDB"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  spring_app:
+    build: .
+    container_name: finance_tracker_app
+    depends_on:
+      postgres_db:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres_db:5432/PersonalFinanceDB
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: VSKOROB2
+      SPRING_JPA_HIBERNATE_DDL_AUTO: none
+      SPRING_LIQUIBASE_ENABLED: "true"
+      SPRING_LIQUIBASE_URL: jdbc:postgresql://postgres_db:5432/PersonalFinanceDB
+      SPRING_LIQUIBASE_USER: postgres
+      SPRING_LIQUIBASE_PASSWORD: VSKOROB2
+    networks:
+      - finance_network
+
+volumes:
+  postgres_data:
+
+networks:
+  finance_network:
+    driver: bridge

@@ -96,9 +96,8 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>3.2.0</version>
                 <configuration>
-                    <mainClass>src/main/java/org/example/PersonalFinanceTrackerApplication.java</mainClass>
+                    <mainClass>org.example.PersonalFinanceTrackerApplication</mainClass>
                 </configuration>
                 <executions>
                     <execution>

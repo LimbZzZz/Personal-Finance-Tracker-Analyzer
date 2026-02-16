@@ -43,7 +43,7 @@
     "last_opened_file_path": "C:/Users/vad_k/Desktop/Проекты/MiracleMovie2"
   }
 }]]></component>
-  <component name="RunManager" selected="JUnit.AccountServiceTest.createAccount_ShouldChangeActive_WhenAccountIsFirst">
+  <component name="RunManager" selected="Application.Start">
     <configuration name="Start" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="org.example.PersonalFinanceTrackerApplication" />
       <module name="PersonalFinanceTracker" />

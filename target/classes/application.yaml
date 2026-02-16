@@ -1,8 +1,6 @@
 spring:
   application:
     name: personal-finance-tracker
-  profiles:
-    active: test
 
   datasource:
     url: jdbc:postgresql://localhost:5432/PersonalFinanceDB
@@ -27,7 +25,7 @@ spring:
     change-log: db/changelog/changelog.yaml
     contexts: dev
     default-schema: public
-    drop-first: true
+    drop-first: false
 
 jwt:
   secret: R7j54XCGxuuxDqAzGgdL20tx8uayFct5K6UA3ZcP0Fk

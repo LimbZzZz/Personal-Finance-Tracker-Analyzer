@@ -135,10 +135,4 @@ public class AccountServiceTest {
         assertThat(capturedAccount.isActive()).isTrue();
     }
 
-    @Test
-    public void createAccount_ShouldNotChange_WhenAccountIsSecond(){
-
-
-    }
-
 }
