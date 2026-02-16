@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.math.BigDecimal;
+import java.nio.file.AccessDeniedException;
+import java.security.Principal;
 import java.util.List;
 
 @Tag(name = "Счет", description = "Управление счетами")
@@ -102,7 +104,8 @@ public interface AccountControllerDocumentation {
                             schema = @Schema(implementation = ErrorResponse.class)
                     ))
     })
-    ResponseEntity<String> subtractFromAccount(@PathVariable Long accountId, @RequestBody BigDecimal subtract);
+    public ResponseEntity<String> subtractFromAccount(@RequestBody BigDecimal subtract, Principal principal);
+
 
     @PostMapping("/add/{accountId}")
     @Operation(summary = "Зачисление на текущий активный счет")
@@ -120,7 +123,7 @@ public interface AccountControllerDocumentation {
                             schema = @Schema(implementation = ErrorResponse.class)
                     ))
     })
-    ResponseEntity<String> addToAccount(@PathVariable Long accountId, @RequestBody BigDecimal add);
+    ResponseEntity<String> addToAccount(@RequestBody BigDecimal add, Principal principal);
 
 
     @GetMapping("/getById/{id}")
@@ -139,7 +142,7 @@ public interface AccountControllerDocumentation {
                             schema = @Schema(implementation = ErrorResponse.class)
                     ))
     })
-    ResponseEntity<Account> getAccountById(@PathVariable Long id);
+    ResponseEntity<AccountDtoResponse> getAccountById(@PathVariable Long id);
 
 
     @GetMapping("/get/all")

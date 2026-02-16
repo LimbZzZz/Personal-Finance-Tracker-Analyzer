@@ -11,6 +11,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
@@ -20,10 +22,10 @@ public class AuthController {
     private final UserDetailsService userDetailsService;
 
     @PostMapping("/login")
-    public String createToken(@RequestParam String username, @RequestParam String password){
+    public Map<String, String> createToken(@RequestParam String username, @RequestParam String password){
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-        return jwtUtil.generateToken(username);
+        String token = jwtUtil.generateToken(username);
+        return Map.of("token", token);
     }
 
     @Profile("dev")

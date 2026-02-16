@@ -43,10 +43,58 @@
     "last_opened_file_path": "C:/Users/vad_k/Desktop/Проекты/MiracleMovie2"
   }
 }]]></component>
-  <component name="RunManager" selected="Application.Start">
+  <component name="RunManager" selected="JUnit.AccountServiceTest.createAccount_ShouldChangeActive_WhenAccountIsFirst">
     <configuration name="Start" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="org.example.PersonalFinanceTrackerApplication" />
       <module name="PersonalFinanceTracker" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AccountServiceTest.createAccount_ShouldChangeActive_WhenAccountIsFirst" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="PersonalFinanceTracker" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.example.ServiceTests.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.example.ServiceTests" />
+      <option name="MAIN_CLASS_NAME" value="org.example.ServiceTests.AccountServiceTest" />
+      <option name="METHOD_NAME" value="createAccount_ShouldChangeActive_WhenAccountIsFirst" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AccountServiceTest.createAccount_ShouldThrowException_WhenUserIsNull" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="PersonalFinanceTracker" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.example.ServiceTests.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.example.ServiceTests" />
+      <option name="MAIN_CLASS_NAME" value="org.example.ServiceTests.AccountServiceTest" />
+      <option name="METHOD_NAME" value="createAccount_ShouldThrowException_WhenUserIsNull" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AccountServiceTest.createAccount_shouldThrowException_WhenAccountIsNull" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="PersonalFinanceTracker" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.example.ServiceTests.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.example.ServiceTests" />
+      <option name="MAIN_CLASS_NAME" value="org.example.ServiceTests.AccountServiceTest" />
+      <option name="METHOD_NAME" value="createAccount_shouldThrowException_WhenAccountIsNull" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -62,54 +110,6 @@
       <option name="PACKAGE_NAME" value="org.example.ServiceTests" />
       <option name="MAIN_CLASS_NAME" value="org.example.ServiceTests.TransactionServiceTest" />
       <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="TransactionServiceTest.createTransaction_shouldException_WhenDataIsIncorrect" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="PersonalFinanceTracker" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="org.example.ServiceTests.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="org.example.ServiceTests" />
-      <option name="MAIN_CLASS_NAME" value="org.example.ServiceTests.TransactionServiceTest" />
-      <option name="METHOD_NAME" value="createTransaction_shouldException_WhenDataIsIncorrect" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="TransactionServiceTest.findAllUsers_ShouldViewAllUsers_WhenRepositoryNotEmpty" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="PersonalFinanceTracker" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="org.example.ServiceTests.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="org.example.ServiceTests" />
-      <option name="MAIN_CLASS_NAME" value="org.example.ServiceTests.TransactionServiceTest" />
-      <option name="METHOD_NAME" value="findAllUsers_ShouldViewAllUsers_WhenRepositoryNotEmpty" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="TransactionServiceTest.findTransactionById_ShouldReturn_WhenIdIsValid" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="PersonalFinanceTracker" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="org.example.ServiceTests.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="org.example.ServiceTests" />
-      <option name="MAIN_CLASS_NAME" value="org.example.ServiceTests.TransactionServiceTest" />
-      <option name="METHOD_NAME" value="findTransactionById_ShouldReturn_WhenIdIsValid" />
-      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -131,19 +131,19 @@
     </configuration>
     <list>
       <item itemvalue="Application.Start" />
+      <item itemvalue="JUnit.AccountServiceTest.createAccount_ShouldChangeActive_WhenAccountIsFirst" />
+      <item itemvalue="JUnit.AccountServiceTest.createAccount_ShouldThrowException_WhenUserIsNull" />
+      <item itemvalue="JUnit.AccountServiceTest.createAccount_shouldThrowException_WhenAccountIsNull" />
       <item itemvalue="JUnit.UserServiceTest" />
-      <item itemvalue="JUnit.TransactionServiceTest.createTransaction_shouldException_WhenDataIsIncorrect" />
-      <item itemvalue="JUnit.TransactionServiceTest.findAllUsers_ShouldViewAllUsers_WhenRepositoryNotEmpty" />
-      <item itemvalue="JUnit.TransactionServiceTest.findTransactionById_ShouldReturn_WhenIdIsValid" />
       <item itemvalue="JUnit.TransactionServiceTest" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.AccountServiceTest.createAccount_ShouldChangeActive_WhenAccountIsFirst" />
+        <item itemvalue="JUnit.AccountServiceTest.createAccount_ShouldThrowException_WhenUserIsNull" />
+        <item itemvalue="JUnit.AccountServiceTest.createAccount_shouldThrowException_WhenAccountIsNull" />
         <item itemvalue="JUnit.UserServiceTest" />
         <item itemvalue="JUnit.TransactionServiceTest" />
-        <item itemvalue="JUnit.TransactionServiceTest.findAllUsers_ShouldViewAllUsers_WhenRepositoryNotEmpty" />
-        <item itemvalue="JUnit.TransactionServiceTest.findTransactionById_ShouldReturn_WhenIdIsValid" />
-        <item itemvalue="JUnit.TransactionServiceTest.createTransaction_shouldException_WhenDataIsIncorrect" />
       </list>
     </recent_temporary>
   </component>

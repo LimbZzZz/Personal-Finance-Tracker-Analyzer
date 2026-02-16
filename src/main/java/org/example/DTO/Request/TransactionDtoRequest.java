@@ -18,9 +18,6 @@ public class TransactionDtoRequest {
     @NotNull(message = "Сумма обязательна")
     @Positive(message = "Число должно быть положительным")
     private BigDecimal sum;
-    @NotNull(message = "ID пользователя обязательно")
-    @Positive(message = "ID пользователя должен быть положительным")
-    private Long userId;
     @NotNull(message = "ID категории не может быть пустой")
     @Positive(message = "ID категории должен быть положительным")
     private Long categoryId;

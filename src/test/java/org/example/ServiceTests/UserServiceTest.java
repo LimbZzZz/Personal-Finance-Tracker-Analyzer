@@ -6,7 +6,7 @@ import org.example.DTO.Response.UserDtoResponse;
 import org.example.Entity.User;
 import org.example.Repository.UserRepository;
 import org.example.Service.UserService;
-import org.example.Validator.UserValidator.UserValidator;
+import org.example.Validator.UserValidator.UserBusinessValidator;
 import org.hibernate.service.spi.ServiceException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,7 +31,7 @@ public class UserServiceTest {
     @Mock
     private PasswordEncoder passwordEncoder;
     @Mock
-    private UserValidator validator;
+    private UserBusinessValidator validator;
     @InjectMocks
     private UserService userService;
     private UserDtoRequest validRequest;
@@ -80,7 +80,7 @@ public class UserServiceTest {
     @Test
     public void createUser_ShouldThrowException_WhenInputInvalid(){
         doThrow(new ValidationException("Invalid email"))
-                .when(validator).fullValidation(any(UserDtoRequest.class));
+                .when(validator).fullValidate(any(UserDtoRequest.class));
 
         List<UserDtoRequest> invalidRequest = List.of(
                 new UserDtoRequest("name", "", "password"),

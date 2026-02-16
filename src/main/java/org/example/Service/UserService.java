@@ -35,7 +35,7 @@ public class UserService {
 
     private void checkEmailUnique(String email){
         if(userRepository.existsByEmail(email)){
-            throw new EmailAlreadyExistException();
+            throw new EmailAlreadyExistException(email);
         }
     }
 
@@ -62,7 +62,7 @@ public class UserService {
         return mapToDtoResponse(user);
     }
 
-    public UserDtoResponse mapToDtoResponse(User user){
+    private UserDtoResponse mapToDtoResponse(User user){
         UserDtoResponse dto = new UserDtoResponse();
         dto.setId(user.getId());
         dto.setName(user.getUsername());

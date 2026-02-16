@@ -5,13 +5,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.Controller.Documentation.AccountControllerDocumentation;
 import org.example.DTO.Request.AccountDtoRequest;
 import org.example.DTO.Response.AccountDtoResponse;
-import org.example.Entity.Account;
 import org.example.Service.AccountService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.net.URI;
+import java.security.Principal;
 import java.util.List;
 
 @Slf4j
@@ -32,36 +32,36 @@ public class AccountController implements AccountControllerDocumentation {
 
     @Override
     public ResponseEntity<BigDecimal> getCurrentBalance(@PathVariable Long accountId){
-        log.info("Запрос на получение текущего баланса получен");
+        log.info("Запрос на получение текущего баланса у пользователя {} получен", accountId);
         BigDecimal currentAmount = accountService.getCurrentBalanceFromOnceCard(accountId);
-        log.info("Текущий баланс успешно получен");
+        log.info("Текущий баланс пользователя {} успешно получен", accountId);
         return ResponseEntity
                 .ok(currentAmount);
     }
 
     @Override
-    public ResponseEntity<String> subtractFromAccount(@PathVariable Long accountId, @RequestBody BigDecimal subtract){
-        log.info("Запрос на списание суммы {}руб, со счета {}, получен", subtract, accountId);
-        BigDecimal newAmount = accountService.subtractFromAccount(subtract);
-        log.info("Списание выполнено успешно");
+    public ResponseEntity<String> subtractFromAccount(@RequestBody BigDecimal subtract, Principal principal) {
+        log.info("Запрос на списание суммы {}руб получен", subtract);
+        BigDecimal newAmount = accountService.subtractFromAccount(subtract, principal.getName());
+        log.info("Списание выполнено успешно, текущий баланс {}", newAmount);
         return ResponseEntity
                 .ok("Средства списаны, текущий баланс: " + newAmount + "руб");
     }
 
     @Override
-    public ResponseEntity<String> addToAccount(@PathVariable Long accountId, @RequestBody BigDecimal add){
-        log.info("Запрос на зачисление суммы {}руб, на счет {}, получен", add, accountId);
-        BigDecimal newAmount = accountService.addToAccount(add);
-        log.info("Зачисление выполнено успешно");
+    public ResponseEntity<String> addToAccount(@RequestBody BigDecimal add, Principal principal){
+        log.info("Запрос на зачисление суммы {}руб получен", add);
+        BigDecimal newAmount = accountService.addToAccount(add, principal.getName());
+        log.info("Зачисление выполнено успешно, текущий баланс {}", newAmount);
         return ResponseEntity
                 .ok("Средства зачислены, текущий баланс: " + newAmount + "руб");
     }
 
     @Override
-    public ResponseEntity<Account> getAccountById(@PathVariable Long id){
-        log.info("Запрос на получение счета по ID, получен");
-        Account account = accountService.findById(id);
-        log.info("Счет успешно получен");
+    public ResponseEntity<AccountDtoResponse> getAccountById(@PathVariable Long id){
+        log.info("Запрос на получение счета по ID {}, получен", id);
+        AccountDtoResponse account = accountService.findAccountById(id);
+        log.info("Счет {} успешно получен", id);
         return ResponseEntity
                 .ok(account);
     }
@@ -76,8 +76,9 @@ public class AccountController implements AccountControllerDocumentation {
 
     @Override
     public ResponseEntity<String> changeActiveAccount(Long id){
-        log.info("Запрос на изменение счета получен");
+        log.info("Запрос на изменение счета {} получен", id);
         accountService.changeActiveCard(id);
+        log.info("Cчет {} успешно изменен", id);
         return ResponseEntity.ok("Счет успешно изменен");
     }
 
@@ -85,6 +86,7 @@ public class AccountController implements AccountControllerDocumentation {
     public ResponseEntity<String> deleteAccount(@PathVariable Long id){
         log.info("Запрос на удаление счета {} получен", id);
         accountService.delete(id);
+        log.info("Счет {} успешно удален", id);
         return ResponseEntity
                 .ok("Счет успешно удален");
     }

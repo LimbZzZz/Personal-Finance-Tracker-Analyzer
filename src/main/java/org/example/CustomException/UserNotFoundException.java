@@ -1,7 +1,11 @@
 package org.example.CustomException;
 
 public class UserNotFoundException extends RuntimeException{
+    public UserNotFoundException(String email){
+        super("Пользователь " + email + " не найден");
+    }
+
     public UserNotFoundException(Long id){
-        super("Пользователь с id " + id + "не найден");
+        super("Пользователь " + id + " не найден");
     }
 }

@@ -3,14 +3,15 @@ package org.example.Service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.CustomException.CategoryNotFoundException;
+import org.example.CustomException.CompanyNotFoundException;
 import org.example.CustomException.TransactionNotFoundException;
 import org.example.CustomException.UserNotFoundException;
 import org.example.DTO.Request.TransactionDtoRequest;
 import org.example.DTO.Response.TransactionDtoResponse;
-import org.example.Entity.Account;
 import org.example.Entity.Transaction;
 import org.example.Entity.User;
 import org.example.Repository.CategoryRepository;
+import org.example.Repository.CompanyRepository;
 import org.example.Repository.TransactionRepository;
 import org.example.Repository.UserRepository;
 import org.example.Service.AOP.LogExecutionTime;
@@ -29,25 +30,27 @@ public class TransactionService{
     private final TransactionRepository transactionRepository;
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
-    private final CompanyService companyService;
+    private final CompanyRepository companyRepository;
     private final AccountService accountService;
     private final TransactionBusinessValidator validator;
 
     @LogExecutionTime(description = "Создание транзакции")
-    public TransactionDtoResponse createTransaction(TransactionDtoRequest request){
+    public TransactionDtoResponse createTransaction(TransactionDtoRequest request, String userEmail){
+        User currentUser = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new UserNotFoundException(userEmail));
+
         validator.fullValidate(request);
 
-        Transaction transaction = createTransactionEntity(request);
+        Transaction transaction = createTransactionEntity(request, currentUser);
         Transaction savedTransaction = transactionRepository.save(transaction);
 
-        subtractValueFromAccount(request);
+        subtractValueFromAccount(request, userEmail);
 
         return mapToTransaction(savedTransaction);
     }
 
-    private Transaction createTransactionEntity(TransactionDtoRequest request){
+    private Transaction createTransactionEntity(TransactionDtoRequest request, User user){
         Transaction newTransaction = new Transaction();
-        User user = userRepository.getReferenceById(request.getUserId());
 
         newTransaction.setCategory(categoryRepository.findById(request.getCategoryId())
                 .orElseThrow(() -> new CategoryNotFoundException(request.getCategoryId())));
@@ -56,13 +59,19 @@ public class TransactionService{
         newTransaction.setSum(request.getSum());
         newTransaction.setUser(user);
         newTransaction.setDate(LocalDateTime.now());
-        newTransaction.setCompany(companyService.findById(request.getCompanyId()));
+
+        if (request.getCompanyId() != null) {
+            newTransaction.setCompany(companyRepository.findById(request.getCompanyId())
+                    .orElseThrow(() -> new CompanyNotFoundException(request.getCompanyId())));
+        } else {
+            newTransaction.setCompany(null);
+        }
 
         return newTransaction;
     }
 
-    private void subtractValueFromAccount(TransactionDtoRequest request){
-        accountService.subtractFromAccount(request.getSum());
+    private void subtractValueFromAccount(TransactionDtoRequest request, String userEmail){
+        accountService.subtractFromAccount(request.getSum(), userEmail);
     }
     @LogExecutionTime(description = "Получить все транзакции")
     public List<TransactionDtoResponse> getAllTransactions(){
@@ -105,7 +114,7 @@ public class TransactionService{
                 .date(transaction.getDate())
                 .description(transaction.getDescription())
                 .userMap(Map.of(transaction.getUser().getId(), transaction.getUser().getUsername()))
-                .companyMap(Map.of(transaction.getCompany().getId(), transaction.getCompany().getName()))
+                .companyMap(transaction.getCompany() != null ? Map.of(transaction.getCompany().getId(), transaction.getCompany().getName()) : null)
                 .build();
     }
 }

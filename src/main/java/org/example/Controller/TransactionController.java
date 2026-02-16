@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.security.Principal;
 import java.util.List;
 
 @Slf4j
@@ -22,10 +23,12 @@ public class TransactionController implements TransactionControllerDocumentation
 
 
     @Override
-    public ResponseEntity<TransactionDtoResponse> createTransaction(@Valid @RequestBody TransactionDtoRequest request){
-        log.info("Входящий запрос на создание транзакции Type: {}, Sum: {}", request.getType(), request.getSum());
-        TransactionDtoResponse createdTransaction = transactionService.createTransaction(request);
-        log.info("Тразнакция успешно создана");
+    public ResponseEntity<TransactionDtoResponse> createTransaction(@Valid @RequestBody TransactionDtoRequest request,
+                                                                    Principal principal){
+        log.info("Входящий запрос на создание транзакции для пользователя {}, Type: {}, Sum: {}", principal.getName(), request.getType(), request.getSum());
+        String currentUserEmail = principal.getName();
+        TransactionDtoResponse createdTransaction = transactionService.createTransaction(request, currentUserEmail);
+        log.info("Тразнакция на сумму {} успешно создана", request.getSum());
         return ResponseEntity
                 .created(URI.create("api/transaction/" + createdTransaction.getId()))
                 .body(createdTransaction);

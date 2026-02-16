@@ -20,13 +20,11 @@ import java.util.*;
 public class TransactionBusinessValidator {
 
     private final CategoryRepository categoryRepository;
-    private final UserRepository userRepository;
     private final CompanyRepository companyRepository;
 
     public void fullValidate(TransactionDtoRequest request) {
         List<FieldError> errors = new ArrayList<>();
 
-        validateUserExists(request, errors);
         validateCategoryExists(request, errors);
 
         if(request.getCompanyId() != null){
@@ -42,14 +40,6 @@ public class TransactionBusinessValidator {
                     request.getCategoryId(),
                     request.getCompanyId(),
                     request.getSum());
-        }
-    }
-
-    public void validateUserExists(TransactionDtoRequest request, List<FieldError> errors){
-        if(!userRepository.existsById(request.getUserId())){
-            errors.add(new FieldError("User ID",
-                    "Пользователя с этим ID не существует",
-                    String.valueOf(request.getUserId())));
         }
     }
 

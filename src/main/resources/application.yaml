@@ -35,8 +35,6 @@ jwt:
 
 springdoc:
   api-docs:
-    path: /api/api-docs
+    path: /v3/api-docs
   swagger-ui:
-    path: /api/swagger-ui.html
-    tags-sorter: alpha
-    operations-sorter: alpha
+    path: /swagger-ui.html

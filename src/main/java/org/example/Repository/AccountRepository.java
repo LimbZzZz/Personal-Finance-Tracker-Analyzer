@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface AccountRepository extends JpaRepository<Account, Long> {
     boolean existsByCardNumber(String cardNumber);
     Optional<Account> findByIsActiveTrue();
+    Optional<Account> findByUserIdAndIsActiveTrue(Long userId);
 }

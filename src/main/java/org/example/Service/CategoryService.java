@@ -8,6 +8,7 @@ import org.example.DTO.Response.CategoryDtoResponse;
 import org.example.Entity.Category;
 import org.example.Entity.Transaction;
 import org.example.Repository.CategoryRepository;
+import org.example.Service.AOP.LogExecutionTime;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
@@ -18,14 +19,12 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-public class CategoryService extends BaseService<Category, Long>{
+@RequiredArgsConstructor
+public class CategoryService{
     private final CategoryRepository categoryRepository;
 
-    public CategoryService(CategoryRepository categoryRepository) {
-        super(categoryRepository);
-        this.categoryRepository = categoryRepository;
-    }
 
+    @LogExecutionTime
     public List<CategoryDtoResponse> findAllCategories(){
         List<Category> category = categoryRepository.findAll();
         return category.stream()
@@ -34,7 +33,7 @@ public class CategoryService extends BaseService<Category, Long>{
     }
 
     private CategoryDtoResponse mapToDtoCategory(Category category){
-        CategoryDtoResponse response = CategoryDtoResponse.builder()
+        return CategoryDtoResponse.builder()
                 .name(category.getName())
                 .color(category.getColor())
                 .transactionMap(category.getTransactions().stream()
@@ -45,10 +44,9 @@ public class CategoryService extends BaseService<Category, Long>{
                                 LinkedHashMap::new
                         )))
                 .build();
-
-        return response;
     }
 
+    @LogExecutionTime
     public Optional<Category> getCategoryByName(String name){
         log.info("Операция получения категории по Имени: {} началась", name);
         long currentTime = System.currentTimeMillis();

@@ -1,6 +1,7 @@
 package org.example.Service;
 
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.CustomException.AccountAlreadyExistException;
 import org.example.CustomException.AccountNotFoundException;
@@ -12,25 +13,21 @@ import org.example.Entity.Account;
 import org.example.Entity.User;
 import org.example.Repository.AccountRepository;
 import org.example.Repository.UserRepository;
+import org.example.Service.AOP.LogExecutionTime;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
 @Transactional
-public class AccountService extends BaseService<Account, Long>{
+@RequiredArgsConstructor
+public class AccountService{
     private final AccountRepository accountRepository;
     private final UserRepository userRepository;
 
-    public AccountService(AccountRepository accountRepository, UserRepository userRepository) {
-        super(accountRepository);
-        this.accountRepository = accountRepository;
-        this.userRepository = userRepository;
-    }
-
+    @LogExecutionTime
     public AccountDtoResponse createAccount(AccountDtoRequest request){
         if (accountRepository.existsByCardNumber(request.getCardNumber())){
             throw new AccountAlreadyExistException(request.getCardNumber());
@@ -66,16 +63,18 @@ public class AccountService extends BaseService<Account, Long>{
 
         return response;
     }
+    @LogExecutionTime
     public BigDecimal getCurrentBalanceFromOnceCard(Long id){
-        return findById(id).getTotalAccount();
+        Account account = accountRepository.findById(id)
+                .orElseThrow(() -> new AccountNotFoundException(id));
+        return account.getTotalAccount();
     }
-
-    public BigDecimal subtractFromAccount(BigDecimal subtract){
-        log.info("Операция списания со счета началась");
-        long currentTime = System.currentTimeMillis();
-
-        Account activeAccount = accountRepository.findByIsActiveTrue()
-                .orElseThrow(RuntimeException::new);
+    @LogExecutionTime
+    public BigDecimal subtractFromAccount(BigDecimal subtract, String userEmail){
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new UserNotFoundException(userEmail));
+        Account activeAccount = accountRepository.findByUserIdAndIsActiveTrue(user.getId())
+                .orElseThrow(() -> new AccountNotFoundException("У пользователя нет активных счетов"));
 
         if(subtract == null){
             log.warn("Счет: {}. Сумма списания равна null", activeAccount.getCardNumber());
@@ -95,23 +94,20 @@ public class AccountService extends BaseService<Account, Long>{
 
         activeAccount.setTotalAccount(activeAccount.getTotalAccount().subtract(subtract));
         accountRepository.save(activeAccount);
-        log.info("Счет: {}.Операция списания успешно завершилась" +
-                "\nВремя выполнения операции: {}мс", activeAccount.getCardNumber(), (System.currentTimeMillis() - currentTime));
         return activeAccount.getTotalAccount();
     }
-
+    @LogExecutionTime
     public List<AccountDtoResponse> findAllAccounts(){
         return accountRepository.findAll().stream()
                 .map(this::mapToAccountResponse)
                 .toList();
     }
-
-    public BigDecimal addToAccount(BigDecimal add){
-        log.info("Операция зачисления на счет началась");
-        long currentTime = System.currentTimeMillis();
-
-        Account activeAccount = accountRepository.findByIsActiveTrue()
-                .orElseThrow(RuntimeException::new);
+    @LogExecutionTime
+    public BigDecimal addToAccount(BigDecimal add, String userEmail){
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new UserNotFoundException(userEmail));
+        Account activeAccount = accountRepository.findByUserIdAndIsActiveTrue(user.getId())
+                .orElseThrow(() -> new AccountNotFoundException("У пользователя нет активных счетов"));
 
         if(add == null || add.compareTo(BigDecimal.ZERO) <= 0){
             log.error("Счет: {}. Сумма зачисления должна быть больше 0: Сумма зачисления: {}", activeAccount.getCardNumber(), add);
@@ -119,11 +115,23 @@ public class AccountService extends BaseService<Account, Long>{
         }
         activeAccount.setTotalAccount(activeAccount.getTotalAccount().add(add));
         accountRepository.save(activeAccount);
-        log.info("Счет: {}. Операция зачисления на счет успешно завершена" +
-                "\nВремя выполнения операции: {}мс",activeAccount.getCardNumber() , (System.currentTimeMillis() - currentTime));
         return activeAccount.getTotalAccount();
     }
 
+    @LogExecutionTime
+    public AccountDtoResponse findAccountById(Long id){
+        Account account = accountRepository.findById(id)
+                .orElseThrow(() -> new AccountNotFoundException(id));
+        return mapToAccountResponse(account);
+    }
+    @LogExecutionTime
+    public void delete(Long id) {
+        log.debug("Удаление аккаунта с id: {}", id);
+        Account account = accountRepository.findById(id)
+                .orElseThrow(() -> new AccountNotFoundException(id));
+        accountRepository.delete(account);
+    }
+    @LogExecutionTime
     public void changeActiveCard(Long id){
         List<Account> accounts = accountRepository.findAll();
         accounts.stream()

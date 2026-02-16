@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.security.Principal;
 import java.util.List;
 
 @Tag(name = "Транзакции", description = "Управление транзакциями")
@@ -42,7 +43,7 @@ public interface TransactionControllerDocumentation {
                             schema = @Schema(implementation = ErrorResponse.class)
                     )),
     })
-    ResponseEntity<TransactionDtoResponse> createTransaction(@Valid @RequestBody TransactionDtoRequest request);
+    ResponseEntity<TransactionDtoResponse> createTransaction(@Valid @RequestBody TransactionDtoRequest request, Principal principal);
 
     @GetMapping("/get")
     @Operation(summary = "Получить список транзакций")

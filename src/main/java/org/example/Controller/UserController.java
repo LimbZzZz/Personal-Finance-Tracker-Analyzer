@@ -43,7 +43,7 @@ public class UserController implements UserControllerDocumentation {
 
     @Override
     public ResponseEntity<UserDtoResponse> getUserById(@PathVariable Long id){
-        log.info("Входящий запрос на получение пользователя " + id);
+        log.info("Входящий запрос на получение пользователя {} получен", id);
         return ResponseEntity
                 .ok(userService.findUserById(id));
     }
