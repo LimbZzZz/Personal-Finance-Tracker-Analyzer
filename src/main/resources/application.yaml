@@ -1,12 +1,8 @@
 spring:
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration
   application:
     name: personal-finance-tracker
-
-  datasource:
-    url: jdbc:postgresql://postgres_db:5432/PersonalFinanceDB
-    username: postgres
-    password: VSKOROB2
-    driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
@@ -17,18 +13,22 @@ spring:
     show-sql: true
 
   liquibase:
-    enabled: true
-    url: jdbc:postgresql://postgres_db:5432/PersonalFinanceDB
-    user: postgres
-    password: VSKOROB2
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
     change-log: db/changelog/changelog.yaml
     contexts: dev
     default-schema: public
     drop-first: false
+  datasource:
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
 
 jwt:
-  secret: R7j54XCGxuuxDqAzGgdL20tx8uayFct5K6UA3ZcP0Fk
+  secret: ${JWT_SECRET}
   expiration: 3600000
 
 springdoc:
