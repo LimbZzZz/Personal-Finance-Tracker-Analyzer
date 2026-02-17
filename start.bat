@@ -1,6 +1,6 @@
 @echo off
 chcp 65001 > nul
-call mvnw clean package -DskipTests
+call mvn clean package -DskipTests
 
 echo.
 docker compose up -d --build
