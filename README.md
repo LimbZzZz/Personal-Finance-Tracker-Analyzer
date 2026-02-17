@@ -15,7 +15,7 @@
 ✅ Виртуализация: Docker  
   
 ## ⚙️Подготовка окружения:  
-- Скачай репозиторий: https://github.com/LimbZzZz/Personal-Finance-Tracker-Analyzer.git  
+- Скачай репозиторий: `git clone https://github.com/LimbZzZz/Personal-Finance-Tracker-Analyzer.git`  
 - Создай базу данных в PostgreSQL  
 - Открой файл .env.example в папке с проектом  
 - Укажи в .env.example свои данные  
